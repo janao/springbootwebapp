@@ -2,6 +2,8 @@ package guru.springframework.controllers;
 
 import guru.springframework.domain.Product;
 import guru.springframework.services.ProductService;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+@Slf4j
 @Controller
 public class ProductController {
 
@@ -33,6 +36,7 @@ public class ProductController {
 
     @RequestMapping("product/edit/{id}")
     public String edit(@PathVariable Integer id, Model model){
+    	log.debug("EDIT PRODUCT ID=" +id);
         model.addAttribute("product", productService.getProductById(id));
         return "productform";
     }
@@ -45,12 +49,13 @@ public class ProductController {
 
     @RequestMapping(value = "product", method = RequestMethod.POST)
     public String saveProduct(Product product){
-        productService.saveProduct(product);
+    	productService.saveProduct(product);
         return "redirect:/product/show/" + product.getId();
     }
 
     @RequestMapping("product/delete/{id}")
     public String delete(@PathVariable Integer id){
+    	log.debug("DELETE PRODUCT ID=" +id);
         productService.deleteProduct(id);
         return "redirect:/products";
     }
